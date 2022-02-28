@@ -81,7 +81,7 @@ library(stringi)
 library(kableExtra)
 
 # assign sample size
-sampleSize = 0.001 
+sampleSize = 0.003
 
 # file size
 fileSizeMB <- round(file.info(c(blogsFileName,
@@ -295,5 +295,80 @@ rm(tdm, freq, wordFreq, g)
 
 ```
 
+```{r ngrams, echo=FALSE, warning=FALSE, eval=TRUE}
 
+#tokenize for n-grams
+
+library(RWeka)
+
+unigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 1, max = 1))
+bigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 2, max = 2))
+trigramTokenizer <- function(x) NGramTokenizer(x, Weka_control(min = 3, max = 3))
+
+
+# create term document matrix for the corpus
+unigramMatrix <- TermDocumentMatrix(corpus, control = list(tokenize = unigramTokenizer))
+
+# eliminate sparse terms for each n-gram and get frequencies of most common n-grams
+unigramMatrixFreq <- sort(rowSums(as.matrix(removeSparseTerms(unigramMatrix, 0.99))), decreasing = TRUE)
+unigramMatrixFreq <- data.frame(word = names(unigramMatrixFreq), freq = unigramMatrixFreq)
+
+# generate plot
+g <- ggplot(unigramMatrixFreq[1:20,], aes(x = reorder(word, -freq), y = freq))
+g <- g + geom_bar(stat = "identity", fill = I("grey50"))
+g <- g + geom_text(aes(label = freq ), vjust = -0.20, size = 3)
+g <- g + xlab("")
+g <- g + ylab("Frequency")
+g <- g + theme(plot.title = element_text(size = 14, hjust = 0.5, vjust = 0.5),
+               axis.text.x = element_text(hjust = 1.0, angle = 45),
+               axis.text.y = element_text(hjust = 0.5, vjust = 0.5))
+g <- g + ggtitle("20 Most Common Unigrams")
+print(g)
+
+
+#Bigrams
+
+# create term document matrix for the corpus
+bigramMatrix <- TermDocumentMatrix(corpus, control = list(tokenize = bigramTokenizer))
+
+# eliminate sparse terms for each n-gram and get frequencies of most common n-grams
+bigramMatrixFreq <- sort(rowSums(as.matrix(removeSparseTerms(bigramMatrix, 0.999))), decreasing = TRUE)
+bigramMatrixFreq <- data.frame(word = names(bigramMatrixFreq), freq = bigramMatrixFreq)
+
+# generate plot
+g <- ggplot(bigramMatrixFreq[1:20,], aes(x = reorder(word, -freq), y = freq))
+g <- g + geom_bar(stat = "identity", fill = I("grey50"))
+g <- g + geom_text(aes(label = freq ), vjust = -0.20, size = 3)
+g <- g + xlab("")
+g <- g + ylab("Frequency")
+g <- g + theme(plot.title = element_text(size = 14, hjust = 0.5, vjust = 0.5),
+               axis.text.x = element_text(hjust = 1.0, angle = 45),
+               axis.text.y = element_text(hjust = 0.5, vjust = 0.5))
+g <- g + ggtitle("20 Most Common Bigrams")
+print(g)
+
+
+#Trigrams
+
+# create term document matrix for the corpus
+trigramMatrix <- TermDocumentMatrix(corpus, control = list(tokenize = trigramTokenizer))
+
+# eliminate sparse terms for each n-gram and get frequencies of most common n-grams
+trigramMatrixFreq <- sort(rowSums(as.matrix(removeSparseTerms(trigramMatrix, 0.9999))), decreasing = TRUE)
+trigramMatrixFreq <- data.frame(word = names(trigramMatrixFreq), freq = trigramMatrixFreq)
+
+# generate plot
+g <- ggplot(trigramMatrixFreq[1:20,], aes(x = reorder(word, -freq), y = freq))
+g <- g + geom_bar(stat = "identity", fill = I("grey50"))
+g <- g + geom_text(aes(label = freq ), vjust = -0.20, size = 3)
+g <- g + xlab("")
+g <- g + ylab("Frequency")
+g <- g + theme(plot.title = element_text(size = 14, hjust = 0.5, vjust = 0.5),
+               axis.text.x = element_text(hjust = 1.0, angle = 45),
+               axis.text.y = element_text(hjust = 0.5, vjust = 0.5))
+g <- g + ggtitle("20 Most Common Trigrams")
+print(g)
+
+
+```
 
