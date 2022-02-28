@@ -1,0 +1,272 @@
+% Options for packages loaded elsewhere
+\PassOptionsToPackage{unicode}{hyperref}
+\PassOptionsToPackage{hyphens}{url}
+%
+\documentclass[
+]{article}
+\usepackage{lmodern}
+\usepackage{amssymb,amsmath}
+\usepackage{ifxetex,ifluatex}
+\ifnum 0\ifxetex 1\fi\ifluatex 1\fi=0 % if pdftex
+  \usepackage[T1]{fontenc}
+  \usepackage[utf8]{inputenc}
+  \usepackage{textcomp} % provide euro and other symbols
+\else % if luatex or xetex
+  \usepackage{unicode-math}
+  \defaultfontfeatures{Scale=MatchLowercase}
+  \defaultfontfeatures[\rmfamily]{Ligatures=TeX,Scale=1}
+\fi
+% Use upquote if available, for straight quotes in verbatim environments
+\IfFileExists{upquote.sty}{\usepackage{upquote}}{}
+\IfFileExists{microtype.sty}{% use microtype if available
+  \usepackage[]{microtype}
+  \UseMicrotypeSet[protrusion]{basicmath} % disable protrusion for tt fonts
+}{}
+\makeatletter
+\@ifundefined{KOMAClassName}{% if non-KOMA class
+  \IfFileExists{parskip.sty}{%
+    \usepackage{parskip}
+  }{% else
+    \setlength{\parindent}{0pt}
+    \setlength{\parskip}{6pt plus 2pt minus 1pt}}
+}{% if KOMA class
+  \KOMAoptions{parskip=half}}
+\makeatother
+\usepackage{xcolor}
+\IfFileExists{xurl.sty}{\usepackage{xurl}}{} % add URL line breaks if available
+\IfFileExists{bookmark.sty}{\usepackage{bookmark}}{\usepackage{hyperref}}
+\hypersetup{
+  pdftitle={Capstone Week 2},
+  pdfauthor={Phil Renner},
+  hidelinks,
+  pdfcreator={LaTeX via pandoc}}
+\urlstyle{same} % disable monospaced font for URLs
+\usepackage[margin=1in]{geometry}
+\usepackage{color}
+\usepackage{fancyvrb}
+\newcommand{\VerbBar}{|}
+\newcommand{\VERB}{\Verb[commandchars=\\\{\}]}
+\DefineVerbatimEnvironment{Highlighting}{Verbatim}{commandchars=\\\{\}}
+% Add ',fontsize=\small' for more characters per line
+\usepackage{framed}
+\definecolor{shadecolor}{RGB}{248,248,248}
+\newenvironment{Shaded}{\begin{snugshade}}{\end{snugshade}}
+\newcommand{\AlertTok}[1]{\textcolor[rgb]{0.94,0.16,0.16}{#1}}
+\newcommand{\AnnotationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\AttributeTok}[1]{\textcolor[rgb]{0.77,0.63,0.00}{#1}}
+\newcommand{\BaseNTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\BuiltInTok}[1]{#1}
+\newcommand{\CharTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\CommentTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\CommentVarTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ConstantTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ControlFlowTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\DataTypeTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{#1}}
+\newcommand{\DecValTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\DocumentationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\ErrorTok}[1]{\textcolor[rgb]{0.64,0.00,0.00}{\textbf{#1}}}
+\newcommand{\ExtensionTok}[1]{#1}
+\newcommand{\FloatTok}[1]{\textcolor[rgb]{0.00,0.00,0.81}{#1}}
+\newcommand{\FunctionTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\ImportTok}[1]{#1}
+\newcommand{\InformationTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\newcommand{\KeywordTok}[1]{\textcolor[rgb]{0.13,0.29,0.53}{\textbf{#1}}}
+\newcommand{\NormalTok}[1]{#1}
+\newcommand{\OperatorTok}[1]{\textcolor[rgb]{0.81,0.36,0.00}{\textbf{#1}}}
+\newcommand{\OtherTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{#1}}
+\newcommand{\PreprocessorTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textit{#1}}}
+\newcommand{\RegionMarkerTok}[1]{#1}
+\newcommand{\SpecialCharTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\SpecialStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\StringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\VariableTok}[1]{\textcolor[rgb]{0.00,0.00,0.00}{#1}}
+\newcommand{\VerbatimStringTok}[1]{\textcolor[rgb]{0.31,0.60,0.02}{#1}}
+\newcommand{\WarningTok}[1]{\textcolor[rgb]{0.56,0.35,0.01}{\textbf{\textit{#1}}}}
+\usepackage{graphicx,grffile}
+\makeatletter
+\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
+\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
+\makeatother
+% Scale images if necessary, so that they will not overflow the page
+% margins by default, and it is still possible to overwrite the defaults
+% using explicit options in \includegraphics[width, height, ...]{}
+\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% Set default figure placement to htbp
+\makeatletter
+\def\fps@figure{htbp}
+\makeatother
+\setlength{\emergencystretch}{3em} % prevent overfull lines
+\providecommand{\tightlist}{%
+  \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
+\setcounter{secnumdepth}{-\maxdimen} % remove section numbering
+\usepackage{booktabs}
+\usepackage{longtable}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{wrapfig}
+\usepackage{float}
+\usepackage{colortbl}
+\usepackage{pdflscape}
+\usepackage{tabu}
+\usepackage{threeparttable}
+\usepackage{threeparttablex}
+\usepackage[normalem]{ulem}
+\usepackage{makecell}
+\usepackage{xcolor}
+
+\title{Capstone Week 2}
+\author{Phil Renner}
+\date{2/19/2022}
+
+\begin{document}
+\maketitle
+
+\hypertarget{overview}{%
+\subsection{Overview}\label{overview}}
+
+This document provides the Milestone Report for week 2 of the Coursera
+Data Science Capstone project.
+
+The objective of this report is to develop an understanding of the
+various statistical properties of the data set that can later be used
+when building the prediction model for the final data product - the
+Shiny application. Using exploratory data analysis, this report
+describes the major features of the training data and then summarizes my
+plans for creating the predictive model.
+
+The model will be trained using a unified document corpus compiled from
+the following three sources of text data:
+
+\emph{Blogs }News *Twitter
+
+The provided text data are provided in four different languages. This
+project will only focus on the English corpora.
+
+\hypertarget{load-the-data}{%
+\subsection{Load the Data}\label{load-the-data}}
+
+\begin{Shaded}
+\begin{Highlighting}[]
+\KeywordTok{library}\NormalTok{(knitr)}
+\KeywordTok{rm}\NormalTok{(}\DataTypeTok{list =} \KeywordTok{ls}\NormalTok{(}\DataTypeTok{all.names =} \OtherTok{TRUE}\NormalTok{))}
+
+
+
+\NormalTok{trainURL <-}\StringTok{ "https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip"}
+\NormalTok{trainDataFile <-}\StringTok{ "data/Coursera-SwiftKey.zip"}
+
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{file.exists}\NormalTok{(}\StringTok{'data'}\NormalTok{)) \{}
+    \KeywordTok{dir.create}\NormalTok{(}\StringTok{'data'}\NormalTok{)}
+\NormalTok{\}}
+
+\ControlFlowTok{if}\NormalTok{ (}\OperatorTok{!}\KeywordTok{file.exists}\NormalTok{(}\StringTok{"data/final/en_US"}\NormalTok{)) \{}
+\NormalTok{    tempFile <-}\StringTok{ }\KeywordTok{tempfile}\NormalTok{()}
+    \KeywordTok{download.file}\NormalTok{(trainURL, tempFile)}
+    \KeywordTok{unzip}\NormalTok{(tempFile, }\DataTypeTok{exdir =} \StringTok{"data"}\NormalTok{)}
+    \KeywordTok{unlink}\NormalTok{(tempFile)}
+\NormalTok{\}}
+
+\CommentTok{# blogs}
+\NormalTok{blogsFileName <-}\StringTok{ "data/final/en_US/en_US.blogs.txt"}
+\NormalTok{con <-}\StringTok{ }\KeywordTok{file}\NormalTok{(blogsFileName, }\DataTypeTok{open =} \StringTok{"r"}\NormalTok{)}
+\NormalTok{blogs <-}\StringTok{ }\KeywordTok{readLines}\NormalTok{(con, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{close}\NormalTok{(con)}
+
+\CommentTok{# news}
+\NormalTok{newsFileName <-}\StringTok{ "data/final/en_US/en_US.news.txt"}
+\NormalTok{con <-}\StringTok{ }\KeywordTok{file}\NormalTok{(newsFileName, }\DataTypeTok{open =} \StringTok{"r"}\NormalTok{)}
+\NormalTok{news <-}\StringTok{ }\KeywordTok{readLines}\NormalTok{(con, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{close}\NormalTok{(con)}
+
+\CommentTok{# twitter}
+\NormalTok{twitterFileName <-}\StringTok{ "data/final/en_US/en_US.twitter.txt"}
+\NormalTok{con <-}\StringTok{ }\KeywordTok{file}\NormalTok{(twitterFileName, }\DataTypeTok{open =} \StringTok{"r"}\NormalTok{)}
+\NormalTok{twitter <-}\StringTok{ }\KeywordTok{readLines}\NormalTok{(con, }\DataTypeTok{encoding =} \StringTok{"UTF-8"}\NormalTok{, }\DataTypeTok{skipNul =} \OtherTok{TRUE}\NormalTok{)}
+\KeywordTok{close}\NormalTok{(con)}
+
+\KeywordTok{rm}\NormalTok{(con)}
+\end{Highlighting}
+\end{Shaded}
+
+\hypertarget{summary-of-the-data}{%
+\subsection{Summary of the Data}\label{summary-of-the-data}}
+
+The first step is to understand what is in the data, including file
+sizes, number of lines, characters, and words in each file. It also
+includes the distribution of words per line.
+
+\begin{table}
+
+\caption{\label{tab:summary}}
+\begin{tabular}[t]{l|r|r|r|r|r|r|r}
+\hline
+File & FileSize & Lines & Characters & Words & WPL.Min & WPL.Mean & WPL.Max\\
+\hline
+en\_US.blogs.txt & 200  MB & 899288 & 206824505 & 37570839 & 0 & 42 & 6726\\
+\hline
+en\_US.news.txt & 196  MB & 77259 & 15639408 & 2651432 & 1 & 35 & 1123\\
+\hline
+en\_US.twitter.txt & 159  MB & 2360148 & 162096241 & 30451170 & 1 & 13 & 47\\
+\hline
+\end{tabular}
+\end{table}
+
+\includegraphics{capstone_interim_report_files/figure-latex/histograms-1.pdf}
+
+\hypertarget{prepare-the-data}{%
+\subsection{Prepare the Data}\label{prepare-the-data}}
+
+\hypertarget{build-the-corpus}{%
+\subsection{Build the Corpus}\label{build-the-corpus}}
+
+\begin{verbatim}
+## Loading required package: NLP
+\end{verbatim}
+
+\begin{verbatim}
+## 
+## Attaching package: 'NLP'
+\end{verbatim}
+
+\begin{verbatim}
+## The following object is masked from 'package:ggplot2':
+## 
+##     annotate
+\end{verbatim}
+
+\begin{table}
+
+\caption{\label{tab:build corpus}First 10 Documents}
+\begin{tabular}[t]{l}
+\hline
+spluttered cant can give raise double salary\\
+\hline
+overall best book series absolutely stellar liked first books series love one tons action building tension shifters vamps lots ethanmerit moments super engaging fun read highly recommended fans urban fantasy reminds bit night huntress series like series think will love one well\\
+\hline
+index uses split residential commercial property implied results tranche nama loans also assumed uk ireland mix residential commercial loans\\
+\hline
+im currently living davis house surrounded nature city bike ride merely three minutes best part around place bunch orange grapefruit trees recently waiting someone collected two grapefruits put orangecolored chair dont know made likely mixture boredom curiosity combination colors look picture firstever arranged pictures\\
+\hline
+fb came helped finish phrases realized one made sense none actually make sense\\
+\hline
+technique watercoloring\\
+\hline
+particular project adds nice addition treats plan make family friends coworkers instead placing cookies etc plastic paper plate wrapped cellophane tied ribbon make lovely festive plate place treats plate give gift holiday treats\\
+\hline
+bags will making long beach ronald mcdonald house put chocolates hand cream lip gloss little fancy favor boxes hybrid stamping digital studio just loving mds wait new improved mds coming later year\\
+\hline
+leading hollywood directors washington political figures leading way america quickly returning paganism shrouded world spiritual darkness millennia may god help us heed warning apostle paul found holy scripture warned worship nature ancient times result turning worship one true god created nature first place\\
+\hline
+commando\\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{verbatim}
+## Loading required package: RColorBrewer
+\end{verbatim}
+
+\includegraphics{capstone_interim_report_files/figure-latex/word frequencies-1.pdf}
+\includegraphics{capstone_interim_report_files/figure-latex/word frequencies-2.pdf}
+
+\end{document}

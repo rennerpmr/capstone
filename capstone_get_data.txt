@@ -1,0 +1,116 @@
+library(knitr)
+rm(list = ls(all.names = TRUE))
+setwd("~/repos/coursera/data-science-specialization-github-assignments/coursera-data-science-capstone")
+
+trainURL <- "https://d396qusza40orc.cloudfront.net/dsscapstone/dataset/Coursera-SwiftKey.zip"
+trainDataFile <- "data/Coursera-SwiftKey.zip"
+
+if (!file.exists('data')) {
+    dir.create('data')
+}
+
+if (!file.exists("data/final/en_US")) {
+    tempFile <- tempfile()
+    download.file(trainURL, tempFile)
+    unzip(tempFile, exdir = "data")
+    unlink(tempFile)
+}
+
+# blogs
+blogsFileName <- "data/final/en_US/en_US.blogs.txt"
+con <- file(blogsFileName, open = "r")
+blogs <- readLines(con, encoding = "UTF-8", skipNul = TRUE)
+close(con)
+
+# news
+newsFileName <- "data/final/en_US/en_US.news.txt"
+con <- file(newsFileName, open = "r")
+news <- readLines(con, encoding = "UTF-8", skipNul = TRUE)
+close(con)
+
+
+
+
+
+
+library(stringi)
+library(kableExtra)
+
+# assign sample size
+sampleSize = 0.01
+
+# file size
+fileSizeMB <- round(file.info(c(blogsFileName,
+                                newsFileName,
+                                twitterFileName))$size / 1024 ^ 2)
+
+# num lines per file
+numLines <- sapply(list(blogs, news, twitter), length)
+
+# num characters per file
+numChars <- sapply(list(nchar(blogs), nchar(news), nchar(twitter)), sum)
+
+# num words per file
+numWords <- sapply(list(blogs, news, twitter), stri_stats_latex)[4,]
+
+# words per line
+wpl <- lapply(list(blogs, news, twitter), function(x) stri_count_words(x))
+
+# words per line summary
+wplSummary = sapply(list(blogs, news, twitter),
+             function(x) summary(stri_count_words(x))[c('Min.', 'Mean', 'Max.')])
+rownames(wplSummary) = c('WPL.Min', 'WPL.Mean', 'WPL.Max')
+
+summary <- data.frame(
+    File = c("en_US.blogs.txt", "en_US.news.txt", "en_US.twitter.txt"),
+    FileSize = paste(fileSizeMB, " MB"),
+    Lines = numLines,
+    Characters = numChars,
+    Words = numWords,
+    t(rbind(round(wplSummary)))
+)
+
+kable(summary,
+      row.names = FALSE,
+      align = c("l", rep("r", 7)),
+      caption = "") %>% kable_styling(position = "left")
+
+# twitter
+twitterFileName <- "data/final/en_US/en_US.twitter.txt"
+con <- file(twitterFileName, open = "r")
+twitter <- readLines(con, encoding = "UTF-8", skipNul = TRUE)
+close(con)
+
+rm(con)
+
+
+# create histograms of words per line
+library(ggplot2)
+library(gridExtra)
+
+plot1 <- qplot(wpl[[1]],
+               geom = "histogram",
+               main = "US Blogs",
+               xlab = "Words per Line",
+               ylab = "Frequency",
+               binwidth = 5)
+
+plot2 <- qplot(wpl[[2]],
+               geom = "histogram",
+               main = "US News",
+               xlab = "Words per Line",
+               ylab = "Frequency",
+               binwidth = 5)
+
+plot3 <- qplot(wpl[[3]],
+               geom = "histogram",
+               main = "US Twitter",
+               xlab = "Words per Line",
+               ylab = "Frequency",
+               binwidth = 1)
+
+plotList = list(plot1, plot2, plot3)
+do.call(grid.arrange, c(plotList, list(ncol = 1)))
+
+# free up some memory
+rm(plot1, plot2, plot3)
