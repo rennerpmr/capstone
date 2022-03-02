@@ -4,8 +4,8 @@ author: "Phil Renner"
 date: "2/19/2022"
 output:
   
-  html_document: default
   pdf_document: default
+  html_document: default
 ---
 
 ```{r setup, include=FALSE}
@@ -20,15 +20,15 @@ The objective of this report is to develop an understanding of the various stati
 
 The model will be trained using a unified document corpus compiled from the following three sources of text data:
 
-*Blogs
-*News
-*Twitter
+-   Blogs
+-   News
+-   Twitter
 
 The provided text data are provided in four different languages. This project will only focus on the English corpora.
 
 ## Load the Data
 
-
+The first step is to download, unzip, and open the data
 
 ```{r Load Data, echo=TRUE, warning=FALSE}
 library(knitr)
@@ -73,9 +73,9 @@ rm(con)
 
 ## Summary of the Data
 
-The first step is to understand what is in the data, including file sizes, number of lines, characters, and words in each file. It also includes the distribution of words per line. 
+The next step is to understand what is in the data, including file sizes, number of lines, characters, and words in each file. It also includes the distribution of words per line.
 
-```{r summary, echo=FALSE, warning=FALSE}
+```{r summary, echo=TRUE, warning=FALSE}
 
 library(stringi)
 library(kableExtra)
@@ -122,8 +122,13 @@ kable(summary,
 
 ```
 
+This initial summary of the data shows that each line in the corpora is fairly short, ranging from 13 words for the Twitter corpus to 42 for the blog corpus. However, these files are still very large, and to manage the large files we will need to select a 0.5% sample of each file for analysis and to create the predictive app.
 
-```{r histograms, echo=FALSE, warning=FALSE}
+## Histograms of the Data
+
+We will produce histograms of the line lengths for each of the three types of files.
+
+```{r histograms, echo=TRUE, warning=FALSE}
 
 # create histograms of words per line
 library(ggplot2)
@@ -134,14 +139,16 @@ plot1 <- qplot(wpl[[1]],
                main = "US Blogs",
                xlab = "Words per Line",
                ylab = "Frequency",
-               binwidth = 5)
+               binwidth = 5,
+               xlim = c(0,250))
 
 plot2 <- qplot(wpl[[2]],
                geom = "histogram",
                main = "US News",
                xlab = "Words per Line",
                ylab = "Frequency",
-               binwidth = 5)
+               binwidth = 5,
+               xlim = c(0,250))
 
 plot3 <- qplot(wpl[[3]],
                geom = "histogram",
@@ -157,10 +164,22 @@ do.call(grid.arrange, c(plotList, list(ncol = 1)))
 
 ```
 
+The histograms show the relatively short line length of each of the three types of texts in the analysis. There is some variation in the distribution, but each distribution is heavily skewed.
 
-## Prepare the Data
+## Prepare the Data and Build the Corpus
 
-```{r prep data, echo=FALSE, warning=FALSE}
+Prior to doing the exploratory analysis, we will need to assemble the corpus. We will sample the text files at 0.5% to improve efficiency and to work within the constraints of our computing power. The program will then perform the following steps to clean up the data:
+
+-   Remove URL, Twitter handles and email patterns by converting them to spaces using a custom content transformer
+-   Convert all words to lowercase
+-   Remove common English stop words
+-   Remove punctuation marks
+-   Remove numbers
+-   Trim whitespace
+-   Remove profanity
+-   Convert to plain text documents
+
+```{r prep data, echo=TRUE, warning=FALSE}
 # set seed for reproducability
 set.seed(88)
 
@@ -190,8 +209,6 @@ rm(blogs, news, twitter, sampleBlogs, sampleNews, sampleTwitter)
 
 ```
 
-## Build the Corpus
-
 ```{r build corpus, echo=FALSE, warning=FALSE}
 
 library(tm)
@@ -209,7 +226,7 @@ if (!file.exists(badWordsFile)) {
     unlink(tempFile)
 }
 
-buildCorpus <- function (dataSet) {
+buildText <- function (dataSet) {
     docs <- VCorpus(VectorSource(dataSet))
     toSpace <- content_transformer(function(x, pattern) gsub(pattern, " ", x))
     
@@ -235,7 +252,7 @@ buildCorpus <- function (dataSet) {
 }
 
 # build the corpus and write to disk (RDS)
-corpus <- buildCorpus(sampleData)
+corpus <- buildText(sampleData)
 saveRDS(corpus, file = "data/final/en_US/en_US.corpus.rds")
 
 # convert corpus to a dataframe and write lines/words to disk (text)
@@ -255,9 +272,11 @@ rm(sampleData)
 
 ```
 
+## Exploratory Analysis
 
+Now that we have prepared the text files and created a sample to enable analysis, we can do the exploratory analysis. The analysis will help us understand which words are most frequent in the corpus, through a bar chart and a word cloud.
 
-```{r word frequencies, echo=FALSE, warning=FALSE}
+```{r word frequencies, echo=TRUE, warning=FALSE}
 
 library(wordcloud)
 library(RColorBrewer)
@@ -295,7 +314,11 @@ rm(tdm, freq, wordFreq, g)
 
 ```
 
-```{r ngrams, echo=FALSE, warning=FALSE, eval=TRUE}
+## N-Grams
+
+The predictive model I will build for the application will handle uniqrams, bigrams, and trigrams. In this section, I have used the RWeka package to construct functions that tokenize the sample data and construct matrices of uniqrams, bigrams, and trigrams.
+
+```{r ngrams, echo=TRUE, warning=FALSE, eval=TRUE}
 
 #tokenize for n-grams
 
@@ -372,3 +395,12 @@ print(g)
 
 ```
 
+## Building the Application
+
+The final deliverable in the capstone project is to build a predictive algorithm that will be deployed as a Shiny app for the user interface. The Shiny app should take as input a phrase (multiple words) in a text box input and output a prediction of the next word.
+
+The predictive algorithm will be developed using an n-gram model with a word frequency lookup similar to that performed in the exploratory data analysis section of this report. A strategy will be built based on the knowledge gathered during the exploratory analysis. For example, as n increased for each n-gram, the frequency decreased for each of its terms. So one possible strategy may be to construct the model to first look for the unigram that would follow from the entered text. Once a full term is entered followed by a space, find the most common bigram model and so on.
+
+Another possible strategy may be to predict the next word using the trigram model. If no matching trigram can be found, then the algorithm would check the bigram model. If still not found, use the unigram model.
+
+The final strategy will be based on the one that increases efficiency and provides the best accuracy.
