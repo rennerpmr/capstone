@@ -3,9 +3,9 @@ title: "Capstone Week 2"
 author: "Phil Renner"
 date: "2/19/2022"
 output:
-  
+  html_document:
+    df_print: paged
   pdf_document: default
- # html_document: default
 ---
 
 ```{r setup, include=FALSE}
