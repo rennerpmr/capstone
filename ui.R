@@ -9,7 +9,7 @@ library(tm)
 
 shinyUI(
   navbarPage("Next Word Prediction",
-             theme = shinytheme("spacelab"),
+#             theme = shinytheme("spacelab"),
              tabPanel("Home",
                       fluidPage(
                         titlePanel("Home"),
